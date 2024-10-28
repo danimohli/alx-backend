@@ -4,7 +4,8 @@ Deletion-resilient hypermedia pagination
 """
 
 import csv
-from typing import List, Dict, Any
+import math
+from typing import Dict, List
 
 
 class Server:
@@ -35,15 +36,16 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            self.__indexed_dataset = {i: dataset[i] for i in range(
-                len(dataset))}
+            truncated_dataset = dataset[:1000]
+            self.__indexed_dataset = {
+                i: dataset[i] for i in range(len(dataset))
+            }
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = 0,
-                        page_size: int = 10) -> Dict[str, Any]:
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
         """
-        Returns a dictionary with pagination details in a
-        deletion-resilient manner.
+        Returns a dictionary with pagination details in
+        a deletion-resilient manner.
 
         Parameters:
         index (int): The current start index of the return page.
@@ -51,7 +53,7 @@ class Server:
 
         Returns:
         Dict[str, Any]: A dictionary containing pagination details such as the
-        current index, next index, page size, and the dataset page.
+                current index, next index, page size, and the dataset page.
         """
         focus = []
         dataset = self.indexed_dataset()
