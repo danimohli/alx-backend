@@ -35,10 +35,12 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            self.__indexed_dataset = {i: dataset[i] for i in range(len(dataset))}
+            self.__indexed_dataset = {i: dataset[i] for i in range(
+                len(dataset))}
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = 0, page_size: int = 10) -> Dict[str, Any]:
+    def get_hyper_index(self, index: int = 0,
+                        page_size: int = 10) -> Dict[str, Any]:
         """
         Returns a dictionary with pagination details in a
         deletion-resilient manner.
@@ -51,7 +53,8 @@ class Server:
         Dict[str, Any]: A dictionary containing pagination details such as the
         current index, next index, page size, and the dataset page.
         """
-        assert isinstance(index, int) and 0 <= index < len(self.indexed_dataset())
+        assert isinstance(index,
+                          int) and 0 <= index < len(self.indexed_dataset())
         assert isinstance(page_size, int) and page_size > 0
 
         indexed_data = self.indexed_dataset()
@@ -63,7 +66,8 @@ class Server:
                 data.append(indexed_data[current_index])
             current_index += 1
 
-        next_index = current_index if current_index < len(indexed_data) else None
+        next_index = current_index if current_index < len(
+                indexed_data) else None
 
         return {
             "index": index,
