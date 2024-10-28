@@ -53,25 +53,14 @@ class Server:
         Dict[str, Any]: A dictionary containing pagination details such as the
         current index, next index, page size, and the dataset page.
         """
-        assert isinstance(index,
-                          int) and 0 <= index < len(self.indexed_dataset())
-        assert isinstance(page_size, int) and page_size > 0
-
-        indexed_data = self.indexed_dataset()
-        data = []
-        current_index = index
-
-        while len(data) < page_size and current_index < len(indexed_data):
-            if current_index in indexed_data:
-                data.append(indexed_data[current_index])
-            current_index += 1
-
-        next_index = current_index if current_index < len(
-                indexed_data) else None
-
-        return {
-            "index": index,
-            "data": data,
-            "page_size": len(data),
-            "next_index": next_index
-        }
+        focus = []
+        dataset = self.indexed_dataset()
+        index = 0 if index is None else index
+        keys = sorted(dataset.keys())
+        assert index >= 0 and index <= keys[-1]
+        [focus.append(i)
+         for i in keys if i >= index and len(focus) <= page_size]
+        data = [dataset[v] for v in focus[:-1]]
+        next_index = focus[-1] if len(focus) - page_size == 1 else None
+        return {'index': index, 'data': data,
+                'page_size': len(data), 'next_index': next_index}
