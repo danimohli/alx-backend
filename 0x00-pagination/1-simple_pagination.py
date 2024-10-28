@@ -10,11 +10,11 @@ from typing import List, Tuple
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """
     Calculates the start and end indexes for a given page and page size.
-    
+
     Parameters:
     page (int): The current page number (1-indexed).
     page_size (int): The number of items per page.
-    
+
     Returns:
     Tuple[int, int]: A tuple containing the start index and the end index
                      for the requested page.
@@ -25,7 +25,8 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
 
 
 class Server:
-    """Server class to paginate a database of popular baby names.
+    """
+    Server class to paginate a database of popular baby names.
     """
     DATA_FILE = "Popular_Baby_Names.csv"
 
@@ -33,7 +34,8 @@ class Server:
         self.__dataset = None
 
     def dataset(self) -> List[List]:
-        """Cached dataset
+        """
+        Cached dataset
         """
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
@@ -46,11 +48,11 @@ class Server:
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
         Returns a page of the dataset based on page and page_size.
-        
+
         Parameters:
         page (int): The current page number (1-indexed).
         page_size (int): The number of items per page.
-        
+
         Returns:
         List[List]: A list of rows corresponding to the specified page.
         """
