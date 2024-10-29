@@ -16,7 +16,7 @@ class MRUCache(BaseCaching):
         Initialize the cache and call the parent class's init method.
         """
         super().__init__()
-        self.last_key = None  # Track the most recently used key
+        self.most_recent_keys = []
 
     def put(self, key, item):
         """
@@ -32,22 +32,19 @@ class MRUCache(BaseCaching):
         if key is not None and item is not None:
             if key in self.cache_data:
                 del self.cache_data[key]
+                self.most_recent_keys.remove(key)
 
             self.cache_data[key] = item
-            self.last_key = key
+            self.most_recent_keys.append(key)
 
             if len(self.cache_data) > self.MAX_ITEMS:
-
-                del self.cache_data[self.last_key]
-                print(f"DISCARD: {self.last_key}")
-
-                self.last_key = list(self.cache_data.keys()
-                                     )[-1] if self.cache_data else None
+                discarded_key = self.most_recent_keys.pop()
+                del self.cache_data[discarded_key]
+                print(f"DISCARD: {discarded_key}")
 
     def get(self, key):
         """
-        Retrieves an item from cache_data by key,
-        marking it as most recently used.
+        Retrieves item from cache_data by key marking it most recent used.
 
         Args:
             key: The key of the item to retrieve.
@@ -60,5 +57,8 @@ class MRUCache(BaseCaching):
             return None
 
         item = self.cache_data[key]
-        self.last_key = key
+
+        if key in self.most_recent_keys:
+            self.most_recent_keys.remove(key)
+        self.most_recent_keys.append(key)
         return item
