@@ -14,7 +14,7 @@ class LIFOCache(BaseCaching):
         Initialize the cache and call the parent class's init method.
         """
         super().__init__()
-        self.last_key = None  # Track the most recently added key
+        self.last_key = None
 
     def put(self, key, item):
         """
@@ -28,17 +28,15 @@ class LIFOCache(BaseCaching):
         the most recently added item is discarded.
         If either key or item is None, this method does nothing.
         """
-        if key is not None and item is not None:
-
-            if key not in self.cache_data:
-                self.last_key = key
+        if key and item:
+            if self.cache_data.get(key):
+                self.stack.remove(key)
+            while len(self.stack) >= self.MAX_ITEMS:
+                delete = self.stack.pop()
+                self.cache_data.pop(delete)
+                print('DISCARD: {}'.format(delete))
+            self.stack.append(key)
             self.cache_data[key] = item
-
-            if len(self.cache_data) > self.MAX_ITEMS:
-                del self.cache_data[self.last_key]
-                print(f"DISCARD: {self.last_key}")
-
-                self.last_key = list(self.cache_data.keys())[-1] if self.cache_data else None
 
     def get(self, key):
         """
