@@ -39,8 +39,7 @@ class LIFOCache(BaseCaching):
                 del self.cache_data[self.last_key]
                 print(f"DISCARD: {self.last_key}")
 
-                self.last_key = list(self.cache_data.keys()
-                                     )[-1] if self.cache_data else None
+                self.last_key = list(self.cache_data.keys())[-1] if self.cache_data else None
 
     def get(self, key):
         """
