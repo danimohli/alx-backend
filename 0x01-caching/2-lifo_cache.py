@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""LIFOCache module implementing a LIFO caching system."""
+"""
+LIFOCache module implementing a LIFO caching system.
+"""
 
 from base_caching import BaseCaching
 
@@ -14,7 +16,7 @@ class LIFOCache(BaseCaching):
         Initialize the cache and call the parent class's init method.
         """
         super().__init__()
-        self.last_key = None
+        self.stack = []
 
     def put(self, key, item):
         """
@@ -49,4 +51,4 @@ class LIFOCache(BaseCaching):
             The value associated with the key in cache_data, or None
             if the key is None or doesn't exist.
         """
-        return self.cache_data.get(key, None)
+        return self.cache_data.get(key)
