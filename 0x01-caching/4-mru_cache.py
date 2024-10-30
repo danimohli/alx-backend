@@ -16,7 +16,7 @@ class MRUCache(BaseCaching):
         Initialize the cache and call the parent class's init method.
         """
         super().__init__()
-        self.most_recent_keys = []
+        self.recent_keys = []
 
     def put(self, key, item):
         """
@@ -29,18 +29,15 @@ class MRUCache(BaseCaching):
         If the cache exceeds MAX_ITEMS, the most recently used item is del
         If either key or item is None, this method does nothing.
         """
-        if key is not None and item is not None:
-            if key in self.cache_data:
-                del self.cache_data[key]
-                self.most_recent_keys.remove(key)
-
+        if key and item:
+            if self.cache_data.get(key):
+                self.recent_keys.remove(key)
+            while len(self.recent_keys) >= self.MAX_ITEMS:
+                delet = self.recent_keys.pop()
+                self.cache_data.pop(delet)
+                print("DISCARD: {}".format(delet))
+            self.recent_keys.append(key)
             self.cache_data[key] = item
-            self.most_recent_keys.append(key)
-
-            if len(self.cache_data) > self.MAX_ITEMS:
-                discarded_key = self.most_recent_keys.pop()
-                del self.cache_data[discarded_key]
-                print(f"DISCARD: {discarded_key}")
 
     def get(self, key):
         """
@@ -53,12 +50,7 @@ class MRUCache(BaseCaching):
             The value associated with the key in cache_data, or None
             if the key is None or doesn't exist.
         """
-        if key is None or key not in self.cache_data:
-            return None
-
-        item = self.cache_data[key]
-
-        if key in self.most_recent_keys:
-            self.most_recent_keys.remove(key)
-        self.most_recent_keys.append(key)
-        return item
+        if self.cache_data.get(key):
+            self.recent_keys.remove(key)
+            self.recent_keys.append(key)
+        return self.cache_data.get(key)
