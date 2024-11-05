@@ -41,7 +41,7 @@ def index():
     Returns:
         The HTML template for the index page.
     """
-    return render_template('index.html',
+    return render_template('3-index.html',
                            title=_("home_title"), header=_("home_header"))
 
 
