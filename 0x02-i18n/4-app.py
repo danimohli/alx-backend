@@ -1,61 +1,47 @@
 #!/usr/bin/env python3
 """
-Basic Flask application with Babel for language support and translation.
+A Basic flask application
 """
-from flask import Flask, render_template, request
-from flask_babel import Babel, gettext as _
+from flask import Flask
+from flask import request
+from flask import render_template
+from flask_babel import Babel
 
 
-class Config:
+class Config(object):
     """
-    Configuration class for Flask app.
-    Sets available languages, default locale, and timezone.
+    Application configuration class
     """
-    LANGUAGES = ["en", "fr"]
-    BABEL_DEFAULT_LOCALE = "en"
-    BABEL_DEFAULT_TIMEZONE = "UTC"
+    LANGUAGES = ['en', 'fr']
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
 
 
+# Instantiate the application object
 app = Flask(__name__)
 app.config.from_object(Config)
 
+# Wrap the application with Babel
 babel = Babel(app)
 
-SUPPORTED_LOCALES = ['en', 'fr', 'es']
-
 
 @babel.localeselector
-def get_locale():
-    locale_arg = request.args.get('locale')
-
-    if locale_arg and locale_arg in SUPPORTED_LOCALES:
-        return locale_arg
-
-    return request.accept_languages.best_match(SUPPORTED_LOCALES)
-
-
-@babel.localeselector
-def get_locale():
+def get_locale() -> str:
     """
-    Determine the best match for supported languages based on
-    request headers.
-
-    Returns:
-        str: The best matching language code.
+    Gets locale from request object
     """
+    locale = request.args.get('locale', '').strip()
+    if locale and locale in Config.LANGUAGES:
+        return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/')
-def index():
+@app.route('/', strict_slashes=False)
+def index() -> str:
     """
-    Render the index page with translations for title and header.
-
-    Returns:
-        The HTML template for the index page.
+    Renders a basic html template
     """
-    return render_template('3-index.html',
-                           title=_("home_title"), header=_("home_header"))
+    return render_template('4-index.html')
 
 
 if __name__ == '__main__':
