@@ -1,0 +1,26 @@
+# French translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+
+msgid ""
+msgstr ""
+
+Project-Id-Version: PROJECT VERSION
+Report-Msgid-Bugs-To: EMAIL@ADDRESS
+POT-Creation-Date: 2024-11-05 23:11+0100
+PO-Revision-Date: 2024-11-05 23:11+0100
+Last-Translator: FULL NAME <EMAIL@ADDRESS>
+Language: fr
+Language-Team: fr <LL@li.org>
+Plural-Forms: nplurals=2; plural=(n > 1);
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Generated-By: Babel 2.16.0
+
+msgid "home_header"
+msgstr "Bonjour monde!"
+
+msgid "home_title"
+msgstr "Bienvenue chez Holberton"
