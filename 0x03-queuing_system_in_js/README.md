@@ -1,0 +1,1 @@
+a queuing system in JavaScript is essentially a way to manage tasks (or events) that need to be executed in a specific order, often one after the other. It’s handy when you want to ensure controlled, sequential processing—like handling API requests, processing tasks in batches, or managing background jobs.
